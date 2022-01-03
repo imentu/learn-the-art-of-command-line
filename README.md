@@ -353,6 +353,8 @@ mkdir empty && rsync -r --delete empty/ some-dir && rmdir some-dir
 - 计算文本文件第三列中所有数的和（可能比同等作用的 Python 代码快三倍且代码量少三倍）：
 ```sh
       awk '{ x += $3 } END { print x }' myfile
+      # try
+      (cd awk; cat data.txt; echo sum of column 3;awk '{ x += $3 } END { print x }' data.txt;)
 ```
 
 - 如果你想在文件树上查看大小/日期，这可能看起来像递归版的 `ls -l` 但比 `ls -lR` 更易于理解：
