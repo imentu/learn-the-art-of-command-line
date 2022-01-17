@@ -38,17 +38,17 @@ success() {
 changeSourceToTsingHuaTuna() {
 	CONTENT=$(cat <<- EOF
 		# 默认注释了源码镜像以提高 apt update 速度，如有需要可自行取消注释\n
-		deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal main restricted universe multiverse\n
-		# deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal main restricted universe multiverse\n
-		deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal-updates main restricted universe multiverse\n
-		# deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal-updates main restricted universe multiverse\n
-		deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal-backports main restricted universe multiverse\n
-		# deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal-backports main restricted universe multiverse\n
-		deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal-security main restricted universe multiverse\n
-		# deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal-security main restricted universe multiverse\n
+		deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal main restricted universe multiverse\n
+		# deb-src http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal main restricted universe multiverse\n
+		deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal-updates main restricted universe multiverse\n
+		# deb-src http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal-updates main restricted universe multiverse\n
+		deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal-backports main restricted universe multiverse\n
+		# deb-src http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal-backports main restricted universe multiverse\n
+		deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal-security main restricted universe multiverse\n
+		# deb-src http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal-security main restricted universe multiverse\n
 		# 预发布软件源，不建议启用\n
-		# deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal-proposed main restricted universe multiverse\n
-		# deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal-proposed main restricted universe multiverse\n
+		# deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal-proposed main restricted universe multiverse\n
+		# deb-src http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal-proposed main restricted universe multiverse\n
 		EOF
 	)	
 	SOURCES_PATH="/etc/apt/sources.list";
@@ -86,12 +86,59 @@ changeSourceToTsingHuaTuna() {
 	success "apt-get autoremove";
 }
 
+aptInstall() {
+	info "Install ${1}"
+	warn "Waiting"
+	if sudo apt-get install -y $1 >/dev/null; then
+		success "Install ${1} Success"
+	else
+		fail "Install ${1} Failed"
+	fi
+}
+
+installApps() {
+	aptInstall git;
+	aptInstall neovim;
+	aptInstall curl;
+	aptInstall tmux;
+	aptInstall tree;
+	aptInstall openssh-server;
+}
+
+configSSH() {
+	mkdir ~/.ssh;
+	chmod 700 ~/.ssh;
+	touch ~/.ssh/authorized_keys;
+	chmod 600 ~/.ssh/authorized_keys;
+}
+
+configGit() {
+	git config --global user.name imentu;
+	git config --global user.email "imentu@foxmail.com";
+}
+
 main() {
 	MSG="change source to TsingHua Tuna";
 	if changeSourceToTsingHuaTuna; then
 		success "$MSG";
 	else
 		warn "$MSG failed"；
+	fi
+
+	installApps;
+
+	MSG="config SSH";
+	if configSSH; then
+		success "$MSG";
+	else
+		warn "$MSG failed";
+	fi
+
+	MSG="config git";
+	if configGit; then
+		success "$MSG";
+	else
+		warn "$MSG failed";
 	fi
 }
 
