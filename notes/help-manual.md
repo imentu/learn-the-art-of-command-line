@@ -14,12 +14,9 @@
 4. Special files (usually found in /dev)
 5. File formats and conventions, e.g. /etc/passwd
 6. Games
-7. Miscellaneous (including macro packages and conventions), e.g. man(7), groff(7)
-
-杂项
-
-1. System administration commands (usually only for root)
-2. Kernel routines [Non standard]
+7. Miscellaneous（杂项） (including macro packages and conventions), e.g. man(7), groff(7)
+8. System administration commands (usually only for root)
+9. Kernel routines [Non standard]
 
 如果不指定要查看的章节号，man 会以预定义的顺序搜索并打开第一个匹配的章节，即使对应手册可能有多个章节。
 
@@ -97,9 +94,7 @@ $man -a man # 拼接所有章节显示（退出显示上一章节时会提示是
 
 `--names-only` ：仅匹配名称字段。
 
-`--no-subpages` ：不连接参数（查询子命令）。
-
-默认情况下，man 会用中划线和下划线连接所有参数用来匹配子命令。例如：git 的各个子命令。
+`--no-subpages` ：不连接参数（查询子命令），默认情况下，man 会用中划线或下划线连接所有参数用来匹配子命令。例如：`man git add` = `man git-add` 。
 
 ##### 名称和描述（apropos）
 
