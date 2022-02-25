@@ -538,6 +538,13 @@ mkdir empty && rsync -r --delete empty/ some-dir && rmdir some-dir
 
 - 用 `pbcopy` 复制任何命令的输出到桌面应用，用 `pbpaste` 粘贴输入。
 
+  `pbcopy` 从标准输入中读取字符存储到剪贴板里。
+
+  ```bash
+  cat a.txt | pbcopy
+  pbpaste
+  ```
+
 - 若要在 OS X 终端中将 Option 键视为 alt 键（例如在上面介绍的 **alt-b**、**alt-f** 等命令中用到），打开 偏好设置 -> 描述文件 -> 键盘 并勾选“使用 Option 键作为 Meta 键”。
 
 - 用 `open` 或者 `open -a /Applications/Whatever.app` 使用桌面应用打开文件。
